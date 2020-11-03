@@ -1,7 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 
-const WilderModel = require("./models/Wilder");
+const wilderControllers = require("./controllers/wilder");
 
 mongoose
   .connect("mongodb://127.0.0.1:27017/wilderdb", {
@@ -13,33 +13,13 @@ mongoose
   .then(() => console.log("Connected to database."))
   .catch((err) => console.error(err));
 
-const server = express();
+const server = express().use(express.json());
 
 server.get("/", (req, res) => {
   res.send("Hello over HTTP");
 });
 
-server.post("/wilders", (req, res) => {
-  WilderModel.init().then(() => {
-    const firstWilder = new WilderModel({
-      name: "Second wilder",
-      city: "San Francisco",
-      skills: [
-        { title: "HTML", voteCount: 10 },
-        { title: "React", voteCount: 5 },
-      ],
-    });
-
-    firstWilder
-      .save()
-      .then((result) => {
-        res.status(201).send("Successfully created wilder.");
-      })
-      .catch((err) => {
-        res.status(500).send("Error creating wilder.");
-      });
-  });
-});
+server.post("/api/wilders", wilderControllers.create);
 
 server.listen(3000, () => {
   console.log("Server listening on port 3000.");
