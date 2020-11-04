@@ -15,14 +15,20 @@ mongoose
 
 const server = express().use(express.json());
 
+const asyncErrorHandler = (callback) => (req, res) => {
+  callback(req, res).catch((err) => {
+    res.status(500).json({ err });
+  });
+};
+
 server.get("/", (req, res) => {
   res.send("Hello over HTTP");
 });
 
-server.post("/api/wilders", wilderControllers.create);
-server.get("/api/wilders", wilderControllers.get);
-server.put("/api/wilders/:id", wilderControllers.update);
-server.delete("/api/wilders/:id", wilderControllers.delete);
+server.post("/api/wilders", asyncErrorHandler(wilderControllers.create));
+server.get("/api/wilders", asyncErrorHandler(wilderControllers.get));
+server.put("/api/wilders/:id", asyncErrorHandler(wilderControllers.update));
+server.delete("/api/wilders/:id", asyncErrorHandler(wilderControllers.delete));
 
 server.listen(3000, () => {
   console.log("Server listening on port 3000.");

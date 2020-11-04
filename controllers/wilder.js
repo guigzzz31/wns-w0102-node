@@ -1,48 +1,26 @@
 const WilderModel = require("../models/Wilder");
 
 module.exports = {
-  get: (req, res) => {
-    WilderModel.find({})
-      .then((wilders) => {
-        res.json({ wilders });
-      })
-      .catch((err) => {
-        res.status(500).json({ err });
-      });
+  get: async (req, res) => {
+    const wilders = await WilderModel.find({});
+    res.json({ wilders });
   },
-  create: (req, res) => {
-    WilderModel.init().then(() => {
-      const wilder = new WilderModel(req.body);
-      wilder
-        .save()
-        .then((result) => {
-          res.status(201).json({ result });
-        })
-        .catch((err) => {
-          res.status(500).json({ err });
-        });
-    });
+  create: async (req, res) => {
+    await WilderModel.init();
+    const wilder = new WilderModel(req.body);
+    const result = await wilder.save();
+    res.status(201).json({ result });
   },
-  update: (req, res) => {
-    const id = req.params.id;
-    WilderModel.findOneAndUpdate({ _id: id }, req.body, {
+  update: async (req, res) => {
+    const { id } = req.params;
+    const result = await WilderModel.findOneAndUpdate({ _id: id }, req.body, {
       new: true,
-    })
-      .then((result) => {
-        res.json({ result });
-      })
-      .catch((err) => {
-        res.status(500).json({ err });
-      });
+    });
+    res.json({ result });
   },
-  delete: (req, res) => {
+  delete: async (req, res) => {
     const id = req.params.id;
-    WilderModel.findByIdAndDelete(id)
-      .then((result) => {
-        res.json({ result });
-      })
-      .catch((err) => {
-        res.status(500).json({ err });
-      });
+    const result = await WilderModel.findByIdAndDelete(id);
+    res.json({ result });
   },
 };
