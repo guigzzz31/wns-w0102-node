@@ -17,6 +17,12 @@ const server = express().use(express.json());
 
 const asyncErrorHandler = (callback) => (req, res) => {
   callback(req, res).catch((err) => {
+    if (err.name == "MongoError" && err.code == 11000) {
+      const error = err.keyPattern.name
+        ? "Name already exists"
+        : "Duplicate field";
+      res.status(400).json({ err: error });
+    }
     res.status(500).json({ err });
   });
 };
