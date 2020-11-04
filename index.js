@@ -21,6 +21,7 @@ server.get("/", (req, res) => {
 
 server.post("/api/wilders", wilderControllers.create);
 server.get("/api/wilders", wilderControllers.get);
+server.put("/api/wilders/:id", wilderControllers.update);
 
 server.listen(3000, () => {
   console.log("Server listening on port 3000.");
