@@ -35,4 +35,14 @@ module.exports = {
         res.status(500).json({ err });
       });
   },
+  delete: (req, res) => {
+    const id = req.params.id;
+    WilderModel.findByIdAndDelete(id)
+      .then((result) => {
+        res.json({ result });
+      })
+      .catch((err) => {
+        res.status(500).json({ err });
+      });
+  },
 };
