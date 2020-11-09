@@ -1,6 +1,4 @@
-import mongoose from 'mongoose';
-
-const Schema = mongoose.Schema;
+import { Schema, model } from 'mongoose';
 
 const WilderSchema = new Schema({
   name: { type: String, unique: true },
@@ -8,4 +6,4 @@ const WilderSchema = new Schema({
   skills: [{ title: String, voteCount: Number }],
 });
 
-export default mongoose.model('wilder', WilderSchema);
+export default model('wilder', WilderSchema);

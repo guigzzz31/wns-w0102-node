@@ -20,7 +20,7 @@ export default {
     res.json({ result });
   },
   delete: async (req: Request, res: Response) => {
-    const id = req.params.id;
+    const { id } = req.params;
     const result = await WilderModel.findByIdAndDelete(id);
     res.json({ result });
   },

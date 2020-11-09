@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import express, { Request, Response } from 'express';
 import mongoose from 'mongoose';
 
@@ -20,7 +21,7 @@ const asyncErrorHandler = (callback: Function) => (
   res: Response,
 ) => {
   callback(req, res).catch((err: any) => {
-    if (err.name == 'MongoError' && err.code == 11000) {
+    if (err.name === 'MongoError' && err.code === 11000) {
       const error = err.keyPattern.name
         ? 'Name already exists'
         : 'Duplicate field';
