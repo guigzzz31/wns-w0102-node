@@ -1,5 +1,5 @@
-import { Request, Response } from "express";
-const WilderModel = require("../models/Wilder");
+import { Request, Response } from 'express';
+import WilderModel from '../models/Wilder';
 
 export default {
   get: async (req: Request, res: Response) => {
