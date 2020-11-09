@@ -1,7 +1,7 @@
-const express = require("express");
-const mongoose = require("mongoose");
+import express, { Request, Response } from "express";
+import mongoose from "mongoose";
 
-const wilderControllers = require("./controllers/wilder");
+import wilderControllers from "./controllers/wilder";
 
 mongoose
   .connect("mongodb://127.0.0.1:27017/wilderdb", {
@@ -15,8 +15,11 @@ mongoose
 
 const server = express().use(express.json());
 
-const asyncErrorHandler = (callback) => (req, res) => {
-  callback(req, res).catch((err) => {
+const asyncErrorHandler = (callback: Function) => (
+  req: Request,
+  res: Response
+) => {
+  callback(req, res).catch((err: any) => {
     if (err.name == "MongoError" && err.code == 11000) {
       const error = err.keyPattern.name
         ? "Name already exists"
@@ -27,7 +30,7 @@ const asyncErrorHandler = (callback) => (req, res) => {
   });
 };
 
-server.get("/", (req, res) => {
+server.get("/", (req: Request, res: Response) => {
   res.send("Hello over HTTP");
 });
 
